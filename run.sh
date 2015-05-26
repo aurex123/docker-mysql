@@ -4,6 +4,10 @@ VOLUME_HOME="/var/lib/mysql"
 CONF_FILE="/etc/mysql/conf.d/my.cnf"
 LOG="/var/log/mysql/error.log"
 
+# Aurex: TimeZone
+echo $TZ | tee /etc/timezone \
+  && dpkg-reconfigure --frontend noninteractive tzdata
+
 # Set permission of config file
 chmod 644 ${CONF_FILE}
 chmod 644 /etc/mysql/conf.d/mysqld_charset.cnf

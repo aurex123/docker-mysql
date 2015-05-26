@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
+MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>, Aurelio Santos <aurex@dizenia.me>
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
@@ -26,6 +26,7 @@ RUN chmod 755 /*.sh
 ENV MYSQL_USER admin
 ENV MYSQL_PASS **Random**
 ENV ON_CREATE_DB **False**
+ENV TZ "America/Mazatlan"
 
 # Replication ENV
 ENV REPLICATION_MASTER **False**
