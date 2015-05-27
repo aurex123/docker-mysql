@@ -1,4 +1,4 @@
-tutum-docker-mysql
+aurex-docker-mysql
 ==================
 
 Base docker image to run a MySQL database server
@@ -13,13 +13,13 @@ Different versions are built from different folders. If you want to use MariaDB,
 Usage
 -----
 
-To create the image `tutum/mysql`, execute the following command on the tutum-mysql folder:
+To create the image `aurex/mysql`, execute the following command on the tutum-mysql folder:
 
-        docker build -t tutum/mysql 5.5/
+        docker build -t aurex/mysql 5.5/
 
 To run the image and bind to port 3306:
 
-        docker run -d -p 3306:3306 tutum/mysql
+        docker run -d -p 3306:3306 aurex/mysql
 
 The first time that you run your container, a new user `admin` with all privileges
 will be created in MySQL with a random password. To get the password, check the logs
@@ -55,7 +55,7 @@ Setting a specific password for the admin account
 If you want to use a preset password instead of a random generated one, you can
 set the environment variable `MYSQL_PASS` to your specific password when running the container:
 
-        docker run -d -p 3306:3306 -e MYSQL_PASS="mypass" tutum/mysql
+        docker run -d -p 3306:3306 -e MYSQL_PASS="mypass" aurex/mysql
 
 You can now test your deployment:
 
@@ -72,7 +72,7 @@ If you want a database to be created inside the container when you start it up
 for the first time you can set the environment variable `MYSQL_DB` to string
 that names the database.
 
-        docker run -d -p 3306:3306 -e ON_CREATE_DB="database" tutum/mysql
+        docker run -d -p 3306:3306 -e ON_CREATE_DB="database" aurex/mysql
 
 
 Mounting the database file volume
@@ -81,7 +81,7 @@ Mounting the database file volume
 In order to persist the database data, you can mount a local folder from the host
 on the container to store the database files. To do so:
 
-        docker run -d -v /path/in/host:/var/lib/mysql tutum/mysql /bin/bash -c "/usr/bin/mysql_install_db"
+        docker run -d -v /path/in/host:/var/lib/mysql aurex/mysql /bin/bash -c "/usr/bin/mysql_install_db"
 
 This will mount the local folder `/path/in/host` inside the docker in `/var/lib/mysql` (where MySQL will store the database files by default). `mysql_install_db` creates the initial database structure.
 
@@ -89,7 +89,7 @@ Remember that this will mean that your host must have `/path/in/host` available 
 
 After this you can start your MySQL image, but this time using `/path/in/host` as the database folder:
 
-        docker run -d -p 3306:3306 -v /path/in/host:/var/lib/mysql tutum/mysql
+        docker run -d -p 3306:3306 -v /path/in/host:/var/lib/mysql aurex/mysql
 
 
 Mounting the database file volume from other containers
@@ -105,7 +105,7 @@ You can specify any name of the container by using `--name` option, which will b
 
 After this you can start your MySQL image using volumes in the container created above (put the name of container in `--volumes-from`)
 
-    docker run -d --volumes-from db_vol -p 3306:3306 tutum/mysql
+    docker run -d --volumes-from db_vol -p 3306:3306 aurex/mysql
 
 
 Migrating an existing MySQL Server
@@ -123,11 +123,11 @@ To dump your database data:
 
 To import a SQL backup which is stored for example in the folder `/tmp` in the host, run the following:
 
-        sudo docker run -d -v /tmp:/tmp tutum/mysql /bin/bash -c "/import_sql.sh <user> <pass> /tmp/<dump.sql>"
+        sudo docker run -d -v /tmp:/tmp aurex/mysql /bin/bash -c "/import_sql.sh <user> <pass> /tmp/<dump.sql>"
 
 Also, you can start the new database initializing it with the SQL file:
 
-        sudo docker run -d -v /path/in/host:/var/lib/mysql -e STARTUP_SQL="/tmp/<dump.sql>" tutum/mysql
+        sudo docker run -d -v /path/in/host:/var/lib/mysql -e STARTUP_SQL="/tmp/<dump.sql>" aurex/mysql
 
 Where `<user>` and `<pass>` are the database username and password set earlier and `<dump.sql>` is the name of the SQL file to be imported.
 
@@ -139,11 +139,11 @@ To use MySQL replication, please set environment variable `REPLICATION_MASTER`/`
 Examples:
 - Master MySQL
 -
-        docker run -d -e REPLICATION_MASTER=true -e REPLICATION_PASS=mypass -p 3306:3306 --name mysql tutum/mysql
+        docker run -d -e REPLICATION_MASTER=true -e REPLICATION_PASS=mypass -p 3306:3306 --name mysql aurex/mysql
 
 - Example on Slave MySQL:
 -
-        docker run -d -e REPLICATION_SLAVE=true -p 3307:3306 --link mysql:mysql tutum/mysql
+        docker run -d -e REPLICATION_SLAVE=true -p 3307:3306 --link mysql:mysql aurex/mysql
 
 Now you can access port `3306` and `3307` for the master/slave MySQL.
 
